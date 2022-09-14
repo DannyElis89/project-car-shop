@@ -34,6 +34,22 @@ class CarController {
 
     return res.status(200).json(result);
   }
+
+  public async update(req: Request, res: Response<ICar | null>) {
+    const { params, body } = req;
+
+    const result = await this._service.update(params.id, body);
+    // console.log('result', result);
+
+    return res.status(200).json(result);
+  }
+
+  public async delete(req: Request, res: Response<ICar | null>) {
+    const { id } = req.params;
+    const result = await this._service.delete(id);
+    // console.log('result', result);
+    return res.status(204).json(result);
+  }
 }
 
 export default CarController;

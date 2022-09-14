@@ -28,6 +28,25 @@ class ServiceCar implements IService<ICar> {
     if (!car) throw new Error(ErrorTypes.EntityNotFound);
     return car;
   }
+
+  public async update(_id: string, obj: ICar): Promise<ICar | null> {
+    const parsed = CarZodSchema.safeParse(obj);
+    const { success } = parsed;
+    console.log('parsed', parsed);
+
+    if (!success) throw parsed.error;
+    await this.readOne(_id);
+
+    return this._car.update(_id, obj);
+  }
+
+  public async delete(_id: string): Promise<ICar | null> {
+    await this.readOne(_id);
+    const car = await this._car.delete(_id);
+    // console.log('car', car);
+
+    return car;
+  }
 }
 
 export default ServiceCar;

@@ -1,5 +1,6 @@
-import { isValidObjectId, Model } from 'mongoose';
+import { isValidObjectId, Model, UpdateQuery } from 'mongoose';
 import { IModel } from '../interfaces/IModel';
+import { ErrorTypes } from '../errors/errorsCatalog';
 
 abstract class ModelMongo<T> implements IModel<T> {
   protected _model: Model<T>;
@@ -22,9 +23,14 @@ abstract class ModelMongo<T> implements IModel<T> {
     return this._model.findOne({ _id });
   }
 
-  public async update(id: string, obj: T): Promise<T | null> {
-    return this._model
-      .findOneAndUpdate({ _id: id }, { obj }, { returnOriginal: false });
+  public async update(_id: string, obj:Partial<T>): Promise<T | null> {
+    if (!isValidObjectId(_id)) throw Error(ErrorTypes.InvalidMongoId);
+
+    return this._model.findByIdAndUpdate(
+      { _id },
+      { ...obj } as UpdateQuery<T>,
+      { new: true },
+    );
   }
 
   public async delete(id: string): Promise<T | null> {

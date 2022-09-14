@@ -16,7 +16,11 @@ class ServiceCar implements IService<ICar> {
     const { success } = parsed;
 
     if (!success) throw parsed.error;
-    return this._car.create(obj);
+
+    const result = this._car.create(obj);
+    console.log('result', result);
+
+    return result;
   }
 
   public async read(): Promise<ICar[]> { return this._car.read(); }
@@ -32,7 +36,7 @@ class ServiceCar implements IService<ICar> {
   public async update(_id: string, obj: ICar): Promise<ICar | null> {
     const parsed = CarZodSchema.safeParse(obj);
     const { success } = parsed;
-    console.log('parsed', parsed);
+    // console.log('parsed', parsed);
 
     if (!success) throw parsed.error;
     await this.readOne(_id);

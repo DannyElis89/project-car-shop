@@ -15,7 +15,7 @@ O objetivo do projeto é fornecer uma experiência atraente e eficiente aos usu�
 </details>
 
 
-<!-- <details> -->
+<details>
 <summary><strong> Requisitos  </strong> </summary><br>
 
 **1 - Criação da interface `IModel` genérica**
